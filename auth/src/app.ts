@@ -18,7 +18,7 @@ app.use(
     // Do not encrypt the seesion information
     signed: false,
     // Require user to be on a HTTPS connection
-    secure: true,
+    secure: process.env.NODE_ENV !== 'test',
   })
 );
 
