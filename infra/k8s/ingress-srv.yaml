@@ -11,10 +11,19 @@ spec:
     - host: ticketing.dev
       http:
         paths:
+          # Path matching is in order of the array (so try to match first then second etc)
           - path: /api/users/?(.*)
             pathType: ImplementationSpecific
             backend:
               service:
                 name: auth-srv
+                port:
+                  number: 3000
+          # This is a capture all regex, so we need this to be last
+          - path: /?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: client-srv
                 port:
                   number: 3000
