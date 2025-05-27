@@ -2,7 +2,10 @@ import express from 'express';
 import 'express-async-errors';
 import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
-import { errorHandler, NotFoundError } from '@mbtickr/common';
+import { errorHandler, NotFoundError, currentUser } from '@mbtickr/common';
+
+import { createTicketRouter } from './routes/new';
+import { showTicketRouter } from './routes/show';
 
 const app = express();
 app.set('trust proxy', true);
@@ -15,6 +18,11 @@ app.use(
     secure: process.env.NODE_ENV !== 'test',
   })
 );
+// Set req.current user property -> needs to be done after cookieSession is set
+app.use(currentUser);
+
+app.use(createTicketRouter);
+app.use(showTicketRouter);
 
 // If a route is used that is not any of the prior ones, it is not found
 app.all('*', async () => {

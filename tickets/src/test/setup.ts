@@ -3,9 +3,10 @@ import mongoose from 'mongoose';
 import request from 'supertest';
 // Express application
 import { app } from '../app';
+import jwt from 'jsonwebtoken';
 
 declare global {
-  var signin: () => Promise<string[]>;
+  var signin: () => string[];
 }
 
 let mongo: any;
@@ -36,23 +37,25 @@ afterAll(async () => {
   await mongoose.connection.close();
 });
 
-global.signin = async () => {
-  const email = 'test@test.com';
-  const password = 'password';
+global.signin = () => {
+  // Build a JWT payload { id, email }
+  const payload = {
+    id: '12lk3j4l',
+    email: 'test@test.com',
+  };
 
-  const response = await request(app)
-    .post('/api/users/signup')
-    .send({
-      email,
-      password,
-    })
-    .expect(201);
+  // Create the JWT
+  const token = jwt.sign(payload, process.env.JWT_KEY!);
 
-  const cookie = response.get('Set-Cookie');
+  // Build session object { jwt: 'value of JWT' }
+  const session = { jwt: token };
 
-  if (!cookie) {
-    throw new Error('Failed to get cookie from response');
-  }
+  // Turn that session into json
+  const sessionJSON = JSON.stringify(session);
 
-  return cookie;
+  // Take JSON and encode it as base64
+  const base64 = Buffer.from(sessionJSON).toString('base64');
+
+  // return a string thats the cookie with the encoded data
+  return [`session=${base64}`];
 };
