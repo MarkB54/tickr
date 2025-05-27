@@ -16,6 +16,8 @@ spec:
         - name: tickets
           image: markbastoulis/tickets
           env:
+            - name: MONGO_URI
+              value: 'mongodb://tickets-mongo-srv:27017/tickets'
             # We can only validate a key if we have the original key we created the JWT with
             - name: JWT_KEY
               valueFrom:
