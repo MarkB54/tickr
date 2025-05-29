@@ -19,7 +19,14 @@ spec:
                 name: auth-srv
                 port:
                   number: 3000
-          # This is a capture all regex, so we need this to be last
+          - path: /api/tickets/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: tickets-srv
+                port:
+                  number: 3000
+          # This is a capture all regex route, so we need this to be last
           - path: /?(.*)
             pathType: ImplementationSpecific
             backend:
