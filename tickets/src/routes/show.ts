@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { NotFoundError } from '@mbtickr/common/build';
+import { NotFoundError } from '@mbtickr/common';
 
 import { Ticket } from '../models/ticket';
 

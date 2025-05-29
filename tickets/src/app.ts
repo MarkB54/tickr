@@ -6,7 +6,8 @@ import { errorHandler, NotFoundError, currentUser } from '@mbtickr/common';
 
 import { createTicketRouter } from './routes/new';
 import { showTicketRouter } from './routes/show';
-import { indexTicketRouter } from './routes';
+import { indexTicketRouter } from './routes/index';
+import { updateTicketRouter } from './routes/update';
 
 const app = express();
 app.set('trust proxy', true);
@@ -25,6 +26,7 @@ app.use(currentUser);
 app.use(createTicketRouter);
 app.use(showTicketRouter);
 app.use(indexTicketRouter);
+app.use(updateTicketRouter);
 
 // If a route is used that is not any of the prior ones, it is not found
 app.all('*', async () => {

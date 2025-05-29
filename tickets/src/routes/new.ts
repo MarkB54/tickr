@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
-import { requireAuth, validateRequest } from '@mbtickr/common/build';
+import { requireAuth, validateRequest } from '@mbtickr/common';
 import { Ticket } from '../models/ticket';
 
 const router = express.Router();
